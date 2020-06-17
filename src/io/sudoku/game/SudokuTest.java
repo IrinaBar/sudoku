@@ -45,13 +45,10 @@ public class SudokuTest {
                         "0 0 0 0 2 0 0 0 0" +
                         "0 6 0 0 0 0 2 8 0" +
                         "0 0 0 4 1 9 0 0 5" +
-                        "0 0 0 0 0 0 0 7 0";
+                        "8 0 0 0 0 0 0 7 0";
         Sudoku test1 = new Sudoku(notSolvedYetButValid);
-        Sudoku test1_1 = new Sudoku(notSolvedYetButValid);
-        test1_1.setNumberAt(8, 0, 8);
-        assertEquals("Not puzzled yet, but the rules have not been violated", true, test1.isValid());
+        assertEquals("column 0 doubble 8 number", false, test1.isValid());
 
-        assertEquals("Not puzzled yet, but the rules have not been violated", false, test1_1.isValid());
     }
 
     @Test
