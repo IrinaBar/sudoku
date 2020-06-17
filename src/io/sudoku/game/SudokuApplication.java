@@ -4,21 +4,21 @@ public class SudokuApplication {
 
     public static void main(String[] args) {
         String startValues =
-                "400 000 000" +
+                        "400 000 000" +
                         "000 009 000" +
                         "000 000 785" +
                         "007 048 050" +
-                        "001 300 000" +
+                        "001 300 001" +
                         "006 070 000" +
                         "860 000 903" +
                         "700 005 062" +
-                        "003 700 000";
+                        "803 700 000";
         Sudoku game = new Sudoku(startValues);
 
 
-        game.setNumberAt(8,0,8);
+        //game.setNumberAt(8,0,8);
 
-        System.out.println(game.toString());
+        System.out.println(game.isValid());
        /* String my=
                         "452687319" +
                         "378159426" +

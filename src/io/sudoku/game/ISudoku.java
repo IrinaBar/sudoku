@@ -1,5 +1,7 @@
 package io.sudoku.game;
 
+import java.util.stream.Stream;
+
 public interface ISudoku {
     /**
      * @param row Values to get.
@@ -14,7 +16,6 @@ public interface ISudoku {
      * @param row    Values to set.
      * @param col    are column Values to set.
      * @param number Value to set.
-     * @return set the number in place: row, column
      */
     void setNumberAt(int row, int col, int number);
 
@@ -29,16 +30,21 @@ public interface ISudoku {
     boolean isValid();
 
     /**
-     * Called to solve an incomplete sudoku puzzle.
      *
-     * @return false if that is not possible - otherwise it returns true.
+     * @return whether sudoku is Done or not
      */
     default boolean isDone() {
-        return isValid() && !containsNulls();
+        return Stream.iterate(0, n -> n + 1)
+                .limit(9)
+                .flatMap(row -> Stream.iterate(0, n -> n + 1).limit(9).map(col -> getNumberAt(row, col)))
+                .anyMatch(value -> value != 0) && isValid();
     }
 
-   boolean containsNulls();
-
+    /**
+     * Called to solve an incomplete sudoku puzzle.
+     *
+     * @return returns false if this is not possible - otherwise it returns true
+     */
     boolean solve();
 
     /**

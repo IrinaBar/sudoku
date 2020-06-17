@@ -1,9 +1,8 @@
 package io.sudoku.game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class SudokuTest {
     String bsp = "030000000000195000008000060" +
@@ -37,7 +36,7 @@ public class SudokuTest {
     @Test
     public void testIsValid() {
         String notSolvedYetButValid =
-                        "0 3 0 0 0 0 0 0 8" +
+                "0 3 0 0 0 0 0 0 8" +
                         "0 0 0 1 9 5 0 0 0" +
                         "0 0 8 0 0 0 0 6 0" +
                         "8 0 0 0 6 0 0 0 0" +
@@ -45,15 +44,18 @@ public class SudokuTest {
                         "0 0 0 0 2 0 0 0 0" +
                         "0 6 0 0 0 0 2 8 0" +
                         "0 0 0 4 1 9 0 0 5" +
-                        "8 0 0 0 0 0 0 7 0";
+                        "0 0 0 0 0 0 0 7 0";
         Sudoku test1 = new Sudoku(notSolvedYetButValid);
-        assertEquals("column 0 doubble 8 number", false, test1.isValid());
+        assertTrue("sudoku is valid", test1.isValid());
+        Sudoku test1_1 = new Sudoku(notSolvedYetButValid);
+        test1_1.setNumberAt(8, 0, 8);
+        assertFalse("column 0 doubble 8 number", test1_1.isValid());
 
     }
 
     @Test
-    public void testEnoughtNumbers() {
-        String notEnoughtNumbers =
+    public void testEnoughNumbers() {
+        String notEnoughNumbers =
                 "0 3 0 0 0 0" +
                         "0 0 0 1 9 5 0 0 0" +
                         "0 0 8 0 0 0 0 6 0" +
@@ -64,9 +66,9 @@ public class SudokuTest {
                         "0 0 0 4 1 9 0 0 5" +
                         "0 0 0 0 0 0 0 7 0";
         try {
-            Sudoku test2 = new Sudoku(notEnoughtNumbers);
+            Sudoku test2 = new Sudoku(notEnoughNumbers);
             test2.isValid();
-            fail();
+            fail("This sudoku has not enough numbers");
         } catch (IllegalArgumentException e) {
         }
     }
@@ -86,7 +88,7 @@ public class SudokuTest {
         Sudoku test4 = new Sudoku(bsp);
         test4.setNumberAt(8, 0, 8);
         assertEquals("Set the number 8 in the row: 8, column: 0", 8, test4.getNumberAt(8, 0));
-        //assertEquals("Contains doubble numbers in column 0", false, test4.isValid());
+        assertEquals("Contains doubble numbers in colums 0", false, test4.isValid());
     }
 
     @Test
@@ -95,10 +97,4 @@ public class SudokuTest {
         assertEquals("Sudoku has no doubble numbers and solved", true, test5.isDone());
     }
 
-    @Test
-    public void testContainsNulls() {
-        Sudoku test6 = new Sudoku(done);
-        assertEquals("Do not contains nulls, sudoku is full", false, test6.containsNulls());
-
-    }
 }

@@ -42,7 +42,7 @@ public class Sudoku implements ISudoku {
             try {
                 intValues.add(Integer.parseInt(val));
             } catch (NumberFormatException e) {
-                System.err.println("Value [" + val + "] is not an \n" + "initialized Value");
+                //System.err.println("Value [" + val + "] is not an \n" + "initialized Value");
             }
         }
 
@@ -71,13 +71,13 @@ public class Sudoku implements ISudoku {
 
     @Override
     public boolean isValid() {
-        if (!isValidRowsOnDuplicates()) {
-            System.out.println("\n" + "The rows contain the same numbers");
+        if (!isValidRows()) {
+            //System.out.println("\n" + "The rows contain the same numbers");
             return false;
         }
 
-        if (!isValidColsOnDuplicates()) {
-            System.out.println("The columns contain the same numbers");
+        if (!isValidColumns()) {
+            //System.out.println("The columns contain the same numbers");
             return false;
         }
 
@@ -85,7 +85,7 @@ public class Sudoku implements ISudoku {
     }
 
 
-    private boolean isValidRowsOnDuplicates() {
+    private boolean isValidRows() {
         for (int row = 0; row < SIZE; row++) {
             for (int n = 1; n <= SIZE; n++) {
                 int countEntries = Collections.frequency(board.get(row), n);
@@ -97,29 +97,24 @@ public class Sudoku implements ISudoku {
         return true;
     }
 
-    private boolean isValidColsOnDuplicates() {
-        for (int row = 0; row < SIZE; row++) { // run along the rows
-            List<Integer> tmpCol = new ArrayList<>(); // we need to create a collection for an imaginary column
-            for (int col = 0; col < SIZE; col++) { // run along the columns
-                tmpCol.add(board.get(row).get(col)); // fill an imaginary column
+    private boolean isValidColumns() {
+        for (int col = 0; col < SIZE; col++) {
+            List<Integer> temp = new ArrayList<>();
+            for (int row = 0; row < SIZE; row++) {
+                temp.add(getNumberAt(row, col));
             }
-
-            for (int tmpColI = 0; tmpColI < SIZE; tmpColI++) { // run along the imaginary columns
-                for (int n = 1; n <= SIZE; n++) { // take the numerical values that we will check for the fact of entries
-                    int countEntries = Collections.frequency(tmpCol, n); // frequency method returns the number of occurrences in collections
-                    //System.out.println("In column [" + tmpColI + "] has found entries for the number [" + n + "] = " + countEntries);
-                    if (countEntries > 1) return false;
-                }
+            for (int n = 1; n <= SIZE; n++) {
+                int countEntries = Collections.frequency(temp, n);
+                if (countEntries > 1) return false;
             }
         }
-
         return true;
     }
 
     public boolean containsNulls() {
         for (int row = 0; row < SIZE; row++) { // run along the rows
             for (int col = 0; col < SIZE; col++) { // run along the columns
-                if (getNumberAt(row, col) == 0)return true;
+                if (getNumberAt(row, col) == 0) return true;
             }
         }
         return false;
@@ -155,12 +150,13 @@ public class Sudoku implements ISudoku {
      * Gets a grid position (0<=row, col<=8) as a parameter and determines
      * all possible digits that can still be entered in this grid position,
      * so that the Sudoku is valid after the number has been entered.
+     *
      * @param row are row Values
      * @param col are column Values
      * @return possible Values for this position in row and column
      */
     private List<Integer> getPossibilities(int row, int col) {
-        System.out.println(row + " " + col);
+        //System.out.println(row + " " + col);
         List<Integer> possibleValues = new ArrayList<>();
         for (int n = 1; n <= SIZE; n++) {
             if (!isInRow(row, n) && !isInCol(col, n) && !isInBox3x3(row, col, n)) {
@@ -208,7 +204,7 @@ public class Sudoku implements ISudoku {
         int colcol = col - col % 3;
         for (int i = rowrow; i < rowrow + 3; i++) {
             for (int j = colcol; j < colcol + 3; j++) {
-                if (getNumberAt(i,j) == number) return true;
+                if (getNumberAt(i, j) == number) return true;
             }
         }
         return false;
