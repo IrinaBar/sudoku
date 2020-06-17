@@ -1,5 +1,7 @@
 package io.sudoku.game;
 
+
+
 public interface ISudoku {
     /**
      * @param row Values to get.
@@ -14,7 +16,6 @@ public interface ISudoku {
      * @param row    Values to set.
      * @param col    are column Values to set.
      * @param number Value to set.
-     * @return set the number in place: row, column
      */
     void setNumberAt(int row, int col, int number);
 
@@ -28,17 +29,24 @@ public interface ISudoku {
      */
     boolean isValid();
 
+
+    /**
+     * @return whether sudoku is done and valid
+     */
+    default boolean isDone() {
+        for (int row = 0; row < 9; row++) { // run along the rows
+            for (int col = 0; col < 9; col++) { // run along the columns
+                if (getNumberAt(row, col) == 0)return false;
+            }
+        }
+        return isValid();
+    }
+
     /**
      * Called to solve an incomplete sudoku puzzle.
      *
      * @return false if that is not possible - otherwise it returns true.
      */
-    default boolean isDone() {
-        return isValid() && !containsNulls();
-    }
-
-   boolean containsNulls();
-
     boolean solve();
 
     /**
