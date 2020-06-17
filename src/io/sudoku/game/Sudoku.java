@@ -111,15 +111,6 @@ public class Sudoku implements ISudoku {
         return true;
     }
 
-    public boolean containsNulls() {
-        for (int row = 0; row < SIZE; row++) { // run along the rows
-            for (int col = 0; col < SIZE; col++) { // run along the columns
-                if (getNumberAt(row, col) == 0) return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean solve() {
         for (int row = 0; row < SIZE; row++) {
@@ -142,7 +133,6 @@ public class Sudoku implements ISudoku {
                 }
             }
         }
-
         return true;
     }
 

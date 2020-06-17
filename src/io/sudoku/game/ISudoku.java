@@ -34,10 +34,12 @@ public interface ISudoku {
      * @return whether sudoku is Done or not
      */
     default boolean isDone() {
-        return Stream.iterate(0, n -> n + 1)
-                .limit(9)
-                .flatMap(row -> Stream.iterate(0, n -> n + 1).limit(9).map(col -> getNumberAt(row, col)))
-                .anyMatch(value -> value != 0) && isValid();
+        for (int row = 0; row < 9; row++) { // run along the rows
+            for (int col = 0; col < 9; col++) { // run along the columns
+                if (getNumberAt(row, col) == 0)return false;
+            }
+        }
+        return isValid();
     }
 
     /**
