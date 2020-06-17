@@ -6,8 +6,15 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 public class SudokuTest {
-    String bsp = "030000000000195000008000060" +
-            "800060000400800001000020000060000280000419005000000070";
+    String bsp = "030000000" +
+            "000195000" +
+            "008000060" +
+            "800060000" +
+            "400800001" +
+            "000020000" +
+            "060000280" +
+            "000419005" +
+            "000000070";
     String done =
                     "5 3 4 6 7 8 9 1 2" +
                     "6 7 2 1 9 5 3 4 8" +
@@ -48,10 +55,10 @@ public class SudokuTest {
                         "0 0 0 0 0 0 0 7 0";
         Sudoku test1 = new Sudoku(notSolvedYetButValid);
         Sudoku test1_1 = new Sudoku(notSolvedYetButValid);
-        test1_1.setNumberAt(1, 0, 8);
-        assertEquals("Not puzzled yet, but the rules have not been violated", true, test1.isValid());
+        test1_1.setNumberAt(1, 1, 3);
+        assertEquals("Not puzzled yet, but the rules have been violated", true, test1.isValid());
 
-        assertEquals("Not puzzled yet, but the rules have not been violated", false, test1_1.isValid());
+        assertEquals("Not puzzled yet, but the rules have been violated", false, test1_1.isValid());
     }
 
     @Test

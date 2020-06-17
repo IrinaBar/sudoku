@@ -3,6 +3,7 @@ package io.sudoku.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Klasse for the Sudoku-exercise.
@@ -86,22 +87,18 @@ public class Sudoku implements ISudoku {
 
 
     private boolean isValidRows() {
-        for (int row = 0; row < SIZE; row++) {
-            for (int n = 1; n <= SIZE; n++) {
-                int countEntries = Collections.frequency(board.get(row), n);
-                //System.out.println("In row [" + row + "] has found entries for the number [" + n + "] = " + countEntries);
-                if (countEntries > 1) return false;
-            }
-        }
-
-        return true;
+        return board.stream()
+                .flatMap(row -> Stream.iterate(1, n -> n + 1)
+                        .limit(9)
+                        .filter(i -> Collections.frequency(row, i) > 1))
+                .findAny().isEmpty();
     }
 
     private boolean isValidCols() {
         for (int col = 0; col < SIZE; col++) {
             List<Integer> temp = new ArrayList<>();
             for (int row = 0; row < SIZE; row++) {
-                temp.add(getNumberAt(col, row));
+                temp.add(getNumberAt(row, col));
             }
             for (int n = 1; n <= SIZE; n++) {
                 int countEntries = Collections.frequency(temp, n);
@@ -141,6 +138,7 @@ public class Sudoku implements ISudoku {
      * Gets a grid position (0<=row, col<=8) as a parameter and determines
      * all possible digits that can still be entered in this grid position,
      * so that the Sudoku is valid after the number has been entered.
+     *
      * @param row are row Values
      * @param col are column Values
      * @return possible Values for this position in row and column
@@ -194,7 +192,7 @@ public class Sudoku implements ISudoku {
         int colcol = col - col % 3;
         for (int i = rowrow; i < rowrow + 3; i++) {
             for (int j = colcol; j < colcol + 3; j++) {
-                if (getNumberAt(i,j) == number) return true;
+                if (getNumberAt(i, j) == number) return true;
             }
         }
         return false;
