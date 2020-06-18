@@ -3,6 +3,7 @@ package io.sudoku.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -87,25 +88,27 @@ public class Sudoku implements ISudoku {
 
 
     private boolean isValidRows() {
-        return board.stream()
+        return !board.stream()
                 .flatMap(row -> Stream.iterate(1, n -> n + 1)
                         .limit(9)
                         .filter(i -> Collections.frequency(row, i) > 1))
-                .findAny().isEmpty();
+                .findAny().isPresent();
     }
 
     private boolean isValidCols() {
-        for (int col = 0; col < SIZE; col++) {
-            List<Integer> temp = new ArrayList<>();
-            for (int row = 0; row < SIZE; row++) {
-                temp.add(getNumberAt(row, col));
-            }
-            for (int n = 1; n <= SIZE; n++) {
-                int countEntries = Collections.frequency(temp, n);
-                if (countEntries > 1) return false;
-            }
-        }
-        return true;
+        return !Stream.iterate(0, col -> col + 1)
+        .limit(9)
+        .flatMap(
+            col -> Stream.iterate(0, row -> row + 1)
+                .limit(9)
+                .map(row -> getNumberAt(row, col))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), listCol ->
+                        new ArrayList<>(Collections.singleton(listCol)).stream()
+                )
+        )).flatMap(row -> Stream.iterate(1, n -> n + 1)
+                            .limit(9)
+                            .filter(i -> Collections.frequency(row, i) > 1))
+                    .findAny().isPresent();
     }
 
     @Override
