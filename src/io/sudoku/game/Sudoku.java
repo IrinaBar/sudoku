@@ -97,18 +97,23 @@ public class Sudoku implements ISudoku {
 
     private boolean isValidCols() {
         return !Stream.iterate(0, col -> col + 1)
-        .limit(9)
-        .flatMap(
-            col -> Stream.iterate(0, row -> row + 1)
                 .limit(9)
-                .map(row -> getNumberAt(row, col))
-                .collect(Collectors.collectingAndThen(Collectors.toList(), listCol ->
-                        new ArrayList<>(Collections.singleton(listCol)).stream()
-                )
-        )).flatMap(row -> Stream.iterate(1, n -> n + 1)
-                            .limit(9)
-                            .filter(i -> Collections.frequency(row, i) > 1))
-                    .findAny().isPresent();
+                .flatMap(
+                        col -> Stream.iterate(0, row -> row + 1)
+                                .limit(9)
+                                .map(row -> getNumberAt(row, col))
+                                .collect(Collectors.collectingAndThen(Collectors.toList(), listCol ->
+                                        {
+                                            List<List<Integer>> flipped = new ArrayList<>();
+                                            flipped.add(listCol);
+                                            return flipped.stream();
+                                        }
+                                        )
+                                ))
+                .flatMap(row -> Stream.iterate(1, n -> n + 1)
+                        .limit(9)
+                        .filter(i -> Collections.frequency(row, i) > 1))
+                .findAny().isPresent();
     }
 
     @Override
