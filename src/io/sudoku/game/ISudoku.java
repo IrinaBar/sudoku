@@ -1,7 +1,5 @@
 package io.sudoku.game;
 
-import java.util.stream.Stream;
-
 public interface ISudoku {
     /**
      * @param row Values to get.

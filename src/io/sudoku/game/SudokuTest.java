@@ -46,10 +46,10 @@ public class SudokuTest {
 
     String simpleInvalid = "000000100000000010000000001000000000000000000000000000000000000000000000000000000";
 
-    @Test(timeout = 100000)
+    @Test(timeout = 10000)
     public void testInvalid() {
         Sudoku test = new Sudoku(simpleInvalid);
-        assertFalse("Can not be solved", test.isValid());
+        assertFalse("Can not be solved", test.solve());
     }
 
     @Test(timeout = 10000)
