@@ -44,12 +44,20 @@ public class SudokuTest {
                     "0 0 0 4 1 9 0 0 5" +
                     "0 0 0 0 0 0 0 7 0";
 
-    String simpleInvalid = "000000100000000010000000001000000000000000000000000000000000000000000000000000000";
+    String simpleInvalid = "000 000 100" +
+            "000 000 010" +
+            "000 000 001" +
+            "000 000 000" +
+            "000 000 000" +
+            "000 000 000" +
+            "000 000 000" +
+            "000 000 000" +
+            "000 000 000";
 
     @Test(timeout = 10000)
     public void testInvalid() {
         Sudoku test = new Sudoku(simpleInvalid);
-        assertFalse("Can not be solved", test.solve());
+        assertFalse("Can not be solved", test.isValid());
     }
 
     @Test(timeout = 10000)

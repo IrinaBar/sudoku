@@ -81,6 +81,10 @@ public class Sudoku implements ISudoku {
             return false;
         }
 
+        if (!isValidBox()) {
+            //System.out.println("The box contain the same numbers");
+            return false;
+        }
         return true;
     }
 
@@ -110,6 +114,26 @@ public class Sudoku implements ISudoku {
         }
         return true;
     }
+
+    private boolean isValidBox() {
+        List<Integer> temp = new ArrayList<>();
+        for (int row = 0; row < SIZE; row += 3) {
+            for (int col = 0; col < SIZE; col += 3) {
+                for (int y = 0; y < 3; y++) {
+                    for (int x = 0; x < 3; x++) {
+                        temp.add(getNumberAt(row+y,col+x));
+                    }
+                }
+                for (int n = 1; n <= SIZE; n++) {
+                    int countEntries = Collections.frequency(temp, n);
+                    if (countEntries > 1) return false;
+                }
+               temp.clear();
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public boolean solve() {
@@ -179,7 +203,6 @@ public class Sudoku implements ISudoku {
         for (int i = 0; i < SIZE; i++) {
             if (board.get(i).get(col) == number) return true;
         }
-
         return false;
     }
 
